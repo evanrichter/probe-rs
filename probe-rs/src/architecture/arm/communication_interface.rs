@@ -29,6 +29,8 @@ pub enum DapError {
     WaitResponse,
     #[error("Target power-up failed.")]
     TargetPowerUpFailed,
+    #[error("Incorrect parity on READ request.")]
+    IncorrectParity,
 }
 
 impl From<DapError> for DebugProbeError {
