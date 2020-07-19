@@ -143,8 +143,7 @@ impl<'mmap, 'data> FlashLoader<'mmap, 'data> {
                 })
                 .expect("No RAM defined for chip.");
 
-            let flash_algorithm =
-                raw_flash_algorithm.assemble(ram, session.architecture())?;
+            let flash_algorithm = raw_flash_algorithm.assemble(ram, session.architecture())?;
 
             // Program the data.
             let mut flasher = Flasher::new(session, flash_algorithm, region.clone());
