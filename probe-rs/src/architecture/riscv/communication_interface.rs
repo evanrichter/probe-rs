@@ -432,7 +432,7 @@ impl<'probe> RiscvCommunicationInterface<'probe> {
             13 => self.write_dm_register(Progbuf13(value)),
             14 => self.write_dm_register(Progbuf14(value)),
             15 => self.write_dm_register(Progbuf15(value)),
-            e => return Err(RiscvError::UnsupportedProgramBufferRegister(e)),
+            e => Err(RiscvError::UnsupportedProgramBufferRegister(e)),
         }
     }
 
