@@ -4,7 +4,7 @@
 
 use crate::core::Architecture;
 use crate::CoreInterface;
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use communication_interface::{
     AbstractCommandErrorKind, AccessRegisterCommand, DebugRegister, RiscvCommunicationInterface,
     RiscvError,
@@ -529,7 +529,7 @@ impl<'probe> CoreInterface for Riscv32<'probe> {
             return Ok(CoreStatus::Running);
         }
 
-        panic!("This should not happen")
+        Err(anyhow!("Status is not allhalted and not allrunning, this should not hapen").into())
     }
 }
 
