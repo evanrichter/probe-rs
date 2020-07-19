@@ -210,10 +210,11 @@ impl JLink {
 
         log::trace!("Response: {:?}", response);
 
-        assert!(
-            len < 8,
-            "Not yet implemented for IR registers larger than 8 bit"
-        );
+        if len >= 8 {
+            return Err(DebugProbeError::NotImplemented(
+                "Not yet implemented for IR registers larger than 8 bit",
+            ));
+        }
 
         self.current_ir_reg = data[0] as u32;
 
@@ -427,7 +428,9 @@ impl DebugProbe for JLink {
             let div = std::cmp::max(div, speeds.min_div() as u32);
 
             actual_speed_khz = ((speeds.base_freq() / div) + 999) / 1000;
-            assert!(actual_speed_khz <= speed_khz);
+            if actual_speed_khz > speed_khz {
+                return Err(DebugProbeError::UnsupportedSpeed(speed_khz));
+            }
         } else {
             actual_speed_khz = speed_khz;
         }
@@ -609,10 +612,11 @@ impl JTAGAccess for JLink {
         let address_bits = address.to_le_bytes();
 
         // TODO: This is limited to 5 bit addresses for now
-        assert!(
-            address <= 0x1f,
-            "JTAG Register addresses are fixed to 5 bits"
-        );
+        if address > 0x1f {
+            return Err(DebugProbeError::NotImplemented(
+                "JTAG Register addresses are fixed to 5 bits",
+            ));
+        }
 
         if self.current_ir_reg != address {
             // Write IR register
@@ -633,10 +637,11 @@ impl JTAGAccess for JLink {
         let address_bits = address.to_le_bytes();
 
         // TODO: This is limited to 5 bit addresses for now
-        assert!(
-            address <= 0x1f,
-            "JTAG Register addresses are fixed to 5 bits"
-        );
+        if address > 0x1f {
+            return Err(DebugProbeError::NotImplemented(
+                "JTAG Register addresses are fixed to 5 bits",
+            ));
+        }
 
         if self.current_ir_reg != address {
             // Write IR register
