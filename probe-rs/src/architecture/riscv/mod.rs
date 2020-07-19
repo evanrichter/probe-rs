@@ -522,14 +522,12 @@ impl<'probe> CoreInterface for Riscv32<'probe> {
                 _ => HaltReason::Unknown,
             };
 
-            return Ok(CoreStatus::Halted(reason));
+            Ok(CoreStatus::Halted(reason))
+        } else if status.allrunning() {
+            Ok(CoreStatus::Running)
+        } else {
+            Err(anyhow!("Some cores are running while some are halted, this should not happen.").into())
         }
-
-        if status.allrunning() {
-            return Ok(CoreStatus::Running);
-        }
-
-        Err(anyhow!("Status is not allhalted and not allrunning, this should not hapen").into())
     }
 }
 

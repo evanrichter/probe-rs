@@ -33,7 +33,7 @@ pub(crate) enum RiscvError {
     RequestNotAcknowledged,
     #[error("The version '{0}' of the debug module is currently not supported.")]
     UnsupportedDebugModuleVersion(u8),
-    #[error("Program buffer '{0}' is currently not supported.")]
+    #[error("Program buffer register '{0}' is currently not supported.")]
     UnsupportedProgramBufferRegister(usize),
     #[error("Program buffer is too small for supplied program.")]
     ProgramBufferTooSmall,
