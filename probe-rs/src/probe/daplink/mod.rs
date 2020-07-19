@@ -427,7 +427,9 @@ impl DAPAccess for DAPLink {
             let resp: TransferBlockResponse = commands::send_command(&mut self.device, request)
                 .map_err(|err| DebugProbeError::from(err))?;
 
-            assert_eq!(resp.transfer_response, 1);
+            if resp.transfer_response != 1 {
+                return Err(CmsisDapError::ErrorResponse.into());
+            }
         }
 
         Ok(())
@@ -467,7 +469,9 @@ impl DAPAccess for DAPLink {
             let resp: TransferBlockResponse = commands::send_command(&mut self.device, request)
                 .map_err(|err| DebugProbeError::from(err))?;
 
-            assert_eq!(resp.transfer_response, 1);
+            if resp.transfer_response != 1 {
+                return Err(CmsisDapError::ErrorResponse.into());
+            }
 
             chunk.clone_from_slice(&resp.transfer_data[..]);
         }
