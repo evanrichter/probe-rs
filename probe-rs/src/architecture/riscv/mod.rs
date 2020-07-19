@@ -526,7 +526,10 @@ impl<'probe> CoreInterface for Riscv32<'probe> {
         } else if status.allrunning() {
             Ok(CoreStatus::Running)
         } else {
-            Err(anyhow!("Some cores are running while some are halted, this should not happen.").into())
+            Err(
+                anyhow!("Some cores are running while some are halted, this should not happen.")
+                    .into(),
+            )
         }
     }
 }
