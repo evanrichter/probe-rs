@@ -101,6 +101,8 @@ pub enum DebugProbeError {
     BatchError(BatchCommand),
     #[error(transparent)]
     Other(#[from] anyhow::Error),
+    #[error("Command not supported by probe")]
+    CommandNotSupportedByProbe
 }
 
 #[derive(Error, Debug)]
