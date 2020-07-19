@@ -446,11 +446,10 @@ impl<'probe> CoreInterface for Riscv32<'probe> {
         let tdata_value = Mcontrol(self.read_csr(tdata1)?);
 
         // This should not happen
-        assert_eq!(
-            tdata_value.type_(),
-            2,
-            "Error: Incorrect trigger type for address breakpoint"
-        );
+        let trigger_type = tdata_value.type_();
+        if trigger_type != 0b10 {
+            return Err(RiscvError::UnexpectedTriggerType(trigger_type).into());
+        }
 
         // Setup the trigger
 
