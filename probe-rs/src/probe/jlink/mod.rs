@@ -773,18 +773,20 @@ impl DAPAccess for JLink {
                 let value = bits_to_byte(register_val);
 
                 // Make sure the parity is correct.
-                return if let Some(parity) = result_sequence.next() {
-                    if (value.count_ones() % 2 == 1) == parity {
-                        log::trace!("DAP read {}.", value);
-                        Ok(value)
-                    } else {
+                return result_sequence
+                    .next()
+                    .and_then(|parity| {
+                        if (value.count_ones() % 2 == 1) == parity {
+                            log::trace!("DAP read {}.", value);
+                            Some(value)
+                        } else {
+                            None
+                        }
+                    })
+                    .ok_or_else(|| {
                         log::error!("DAP read fault.");
-                        Err(DebugProbeError::Unknown)
-                    }
-                } else {
-                    log::error!("DAP read fault.");
-                    Err(DebugProbeError::Unknown)
-                };
+                        DapError::IncorrectParity.into()
+                    });
 
                 // Don't care about the Trn bit at the end.
             }
@@ -904,7 +906,7 @@ impl DAPAccess for JLink {
                     ctrl
                 );
 
-                return Err(DebugProbeError::Unknown);
+                return Err(DapError::FaultResponse.into());
             }
 
             // Since this is a write request, we don't care about the part after the ack bits.

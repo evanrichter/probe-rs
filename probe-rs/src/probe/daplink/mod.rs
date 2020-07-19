@@ -425,7 +425,7 @@ impl DAPAccess for DAPLink {
             debug!("Transfer block: chunk={}, len={} bytes", i, chunk.len() * 4);
 
             let resp: TransferBlockResponse = commands::send_command(&mut self.device, request)
-                .map_err(|_| DebugProbeError::Unknown)?;
+                .map_err(|err| DebugProbeError::from(err))?;
 
             assert_eq!(resp.transfer_response, 1);
         }
@@ -465,7 +465,7 @@ impl DAPAccess for DAPLink {
             debug!("Transfer block: chunk={}, len={} bytes", i, chunk.len() * 4);
 
             let resp: TransferBlockResponse = commands::send_command(&mut self.device, request)
-                .map_err(|_| DebugProbeError::Unknown)?;
+                .map_err(|err| DebugProbeError::from(err))?;
 
             assert_eq!(resp.transfer_response, 1);
 
