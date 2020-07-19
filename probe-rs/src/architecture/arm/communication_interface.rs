@@ -181,7 +181,7 @@ impl<'probe> ArmCommunicationInterface<'probe> {
 
             Ok(Some(s))
         } else {
-            log::debug!("No DAP interface available on Probe");
+            log::debug!("No DAP interface available on probe");
 
             Ok(None)
         }

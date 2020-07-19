@@ -169,7 +169,7 @@ impl<'probe> RiscvCommunicationInterface<'probe> {
 
             Ok(Some(s))
         } else {
-            log::debug!("No JTAG interface available on Probe");
+            log::debug!("No JTAG interface available on probe");
 
             Ok(None)
         }
