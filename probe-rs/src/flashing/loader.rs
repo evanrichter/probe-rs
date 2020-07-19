@@ -149,7 +149,7 @@ impl<'mmap, 'data> FlashLoader<'mmap, 'data> {
             };
 
             let flash_algorithm =
-                raw_flash_algorithm.assemble(unwrapped_ram, session.architecture());
+                raw_flash_algorithm.assemble(unwrapped_ram, session.architecture())?;
 
             // Program the data.
             let mut flasher = Flasher::new(session, flash_algorithm, region.clone());
